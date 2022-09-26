@@ -35,18 +35,33 @@ private: int aditionaPointsCount;
    /// </summary>
 private: vector<vec2> curvePoints;
 
+       /// <summary>
+       /// Хранит длинну пути для двумерной точки.
+       /// </summary>
+private: struct PointLength
+{
+public:
+    vec2* point;
+    float pathLength;
+    float vectorLength;
+};
+       /// <summary>
+       /// Набор точек и длинны для них.
+       /// </summary>
+private: vector<PointLength> pointsLength;
+
 #pragma endregion Полученные после подсчета данные.
 
 #pragma region инициализация и подсчет данных.
 
-/// <summary>
-/// Инициализироать объект для создания кривой.
-/// </summary>
-/// <param name="originPoints"></param>
-/// <param name="tension"></param>
-/// <param name="isClosedCurve"></param>
-/// <param name="aditionaPointsCount"></param>
-public: void Init(const vector<vec2> &originPoints, float tension = 0.4f, bool isClosedCurve = true, int aditionaPointsCount = 30);
+       /// <summary>
+       /// Инициализироать объект для создания кривой.
+       /// </summary>
+       /// <param name="originPoints"></param>
+       /// <param name="tension"></param>
+       /// <param name="isClosedCurve"></param>
+       /// <param name="aditionaPointsCount"></param>
+public: void Init(const vector<vec2>& originPoints, float tension = 0.4f, bool isClosedCurve = true, int aditionaPointsCount = 30);
       /// <summary>
       /// Расчитать конкретный вектор для заданного шага.
       /// </summary>
@@ -76,7 +91,12 @@ private: inline static  vector<vec2> CalculateSpline(float aTension, int n,
        /// <param name="aPoints">Исходные точки.</param>
        /// <param name="aIsClosedCurve">Индикатор замкнутости.</param>
        /// <returns>Вектора.</returns>
-private: inline static  vector<vec2> BuildVectors(const vector<vec2> &points, bool isClosedCurve);
+private: inline static  vector<vec2> BuildVectors(const vector<vec2>& points, bool isClosedCurve);
+       /// <summary>
+       /// Посчитать длину пути для каждого узла.
+       /// </summary>
+private: inline void CalculateLengthPath();
+
        /// <summary>
               /// Вычислить узловые CatmullRom-сплайна.
               /// </summary>
@@ -88,11 +108,27 @@ public: void Calculate();
 
 #pragma endregion инициализация и подсчет данных.
 
-/// <summary>
-/// Получить посчитанную кривую.
-/// </summary>
-/// <returns></returns>
+      /// <summary>
+      /// Получить посчитанную кривую.
+      /// </summary>
+      /// <returns></returns>
 public: vector<vec2> GetCurvePoints();
+      /// <summary>
+      /// Получить длину всей кривой.
+      /// </summary>
+public: inline float GetLengthSpline();
+      /// <summary>
+      /// Получить точку на указанной длине пути.
+      /// </summary>
+public: vec2 GetPointOnPath(float length);
+      /// <summary>
+      /// Получить количество узлов кривой.
+      /// </summary>
+      private: inline size_t GetCountCurvePoints();
+      /// <summary>
+      /// Получить индекс последнего узла кривой.
+      /// </summary>
+      private: inline size_t GetLastIndexCurvePoints();
 
 };
 

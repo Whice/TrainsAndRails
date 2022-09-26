@@ -29,11 +29,73 @@ void CatmullRomSpline::Calculate()
         for (vec2 point : singleSpline)
             this->curvePoints.push_back(point);
     }
+    CalculateLengthPath();
 }
 
 vector<vec2> CatmullRomSpline::GetCurvePoints()
 {
     return this->curvePoints;
+}
+
+inline float CatmullRomSpline::GetLengthSpline()
+{
+    return this->pointsLength[this->pointsLength.size() - 1].pathLength;
+}
+
+/// <summary>
+/// Получить нормализованный вектор.
+/// </summary>
+/// <param name="v"></param>
+/// <returns></returns>
+inline vec2 Normalize(vec2 v)
+{
+    double length = v.length();
+    double rLength = length != 0 ? 1 / length : 0;
+    v.x *= rLength;
+    v.y *= rLength;
+    return v;
+}
+
+vec2 CatmullRomSpline::GetPointOnPath(float length)
+{
+    float fullPathLength = GetLengthSpline();
+    while (length > fullPathLength)
+        length -= fullPathLength;
+
+    size_t index = 1;
+    while (this->pointsLength[index].pathLength<length)
+        ++index;
+
+    PointLength prevPoint;
+    PointLength currentPoint;
+    if (index == GetCountCurvePoints())
+    {
+        prevPoint = this->pointsLength[GetLastIndexCurvePoints()];
+        currentPoint = this->pointsLength[0];
+    }
+    else
+    {
+        prevPoint = this->pointsLength[index-1];
+        currentPoint = this->pointsLength[index];
+    }
+
+    vec2 v = *currentPoint.point - *prevPoint.point;
+    v = Normalize(v);
+    float miniLength = currentPoint.pathLength - length;
+    v *= miniLength;
+    vec2 result = *prevPoint.point + v;
+
+    return result;
+}
+
+size_t CatmullRomSpline::GetCountCurvePoints()
+{
+    return this->curvePoints.size();
+}
+
+size_t CatmullRomSpline::GetLastIndexCurvePoints()
+{
+    return GetCountCurvePoints() - 1;
 }
 
 inline vector<vec2> CatmullRomSpline::BuildVectors(const vector<vec2>& points, bool isClosedCurve)
@@ -69,6 +131,21 @@ inline vector<vec2> CatmullRomSpline::BuildVectors(const vector<vec2>& points, b
 
 
     return vectors;
+}
+
+inline void CatmullRomSpline::CalculateLengthPath()
+{
+    float pathLength=0;
+    PointLength pointLength;
+    size_t size = this->curvePoints.size();
+    for (size_t index = 1; index < size; ++index)
+    {
+        pointLength.point = &(this->curvePoints[index]);
+        pointLength.vectorLength = (this->curvePoints[index] - this->curvePoints[index - 1]).length();
+        pathLength += pointLength.vectorLength;
+        pointLength.pathLength = pathLength;
+        this->pointsLength.push_back(pointLength);
+    }
 }
 
 inline vector<vec2> CatmullRomSpline::CalculateSpline(float aTension, int n,
