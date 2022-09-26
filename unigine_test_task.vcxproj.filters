@@ -43,6 +43,9 @@
     <Filter Include="include\glm\simd">
       <UniqueIdentifier>{42e4f65f-6879-4a0d-9347-d5c765b66117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Spline">
+      <UniqueIdentifier>{f9ddebc5-7711-4995-9421-2f34a157fb56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source/main.cpp">
@@ -74,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="source\framework\utils.cpp">
       <Filter>source\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CatmullRomSpline.cpp">
+      <Filter>source\Spline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1239,6 +1245,9 @@
     </ClInclude>
     <ClInclude Include="source\framework\utils.h">
       <Filter>source\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CatmullRomSpline.h">
+      <Filter>source\Spline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

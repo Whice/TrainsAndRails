@@ -1,5 +1,6 @@
-#include "framework/engine.h"
+﻿#include "framework/engine.h"
 #include "framework/utils.h"
+#include "CatmullRomSpline.h"
 
 using namespace std;
 using namespace glm;
@@ -10,6 +11,39 @@ using namespace glm;
 * y - up
 * z - backward
 */
+
+#pragma region Дополнительные функции.
+
+inline vec2 Vec3ToVec2(const vec3 &v)
+{
+	vec3 c;
+	return vec2(v.x, v.z);
+}
+inline vector<vec2> VectorVec3ToVec2(const vector<vec3> &v3)
+{
+	vector<vec2> v2;
+	for (vec3 v : v3)
+	{
+		v2.push_back( Vec3ToVec2(v));
+	}
+	return v2;
+}
+
+inline vec3 Vec2ToVec3(const vec2 &v, float y=-0.375f)
+{
+	return vec3(v.x, y, v.y);
+}
+inline vector<vec3> VectorVec2ToVec3(const vector<vec2> &v2, float y = -0.375f)
+{
+	vector<vec3> v3;
+	for (vec2 v : v2)
+	{
+		v3.push_back(Vec2ToVec3(v, y));
+	}
+	return v3;
+}
+
+#pragma endregion Дополнительные функции.
 
 int main()
 {
@@ -36,26 +70,34 @@ int main()
 	plane->setScale(20.0f);
 
 	// path
-	const float path[] = {
-		 0.0f, -0.375f,  7.0f, // 1
-		-6.0f, -0.375f,  5.0f, // 2
-		-8.0f, -0.375f,  1.0f, // 3
-		-4.0f, -0.375f, -6.0f, // 4
-		 0.0f, -0.375f, -7.0f, // 5
-		 1.0f, -0.375f, -4.0f, // 6
-		 4.0f, -0.375f, -3.0f, // 7
-		 8.0f, -0.375f,  7.0f  // 8
+	const vector<vec3> path = {
+		vec3(0.0f, -0.375f,  7.0f), // 1
+		vec3(-6.0f, -0.375f,  5.0f), // 2
+		vec3(-8.0f, -0.375f,  1.0f), // 3
+		vec3(-4.0f, -0.375f, -6.0f),// 4
+		vec3(0.0f, -0.375f, -7.0f), // 5
+		vec3(1.0f, -0.375f, -4.0f), // 6
+		vec3(4.0f, -0.375f, -3.0f), // 7
+		 vec3(8.0f, -0.375f,  7.0f) // 8
 	};
+
+	//Построение сплайна.
+	CatmullRomSpline crSpline;
+	crSpline.Init(VectorVec3ToVec2(path));
+	crSpline.Calculate();
+	vector<vec3> spline = VectorVec2ToVec3(crSpline.GetCurvePoints());
+
 	vector<Object *> points;
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < path.size(); i++)
 	{
 		Object *sphere = engine->createObject(&sphere_mesh);
 		sphere->setColor(1, 0, 0);
-		sphere->setPosition(path[i*3], path[i*3+1], path[i*3+2]);
+		sphere->setPosition(path[i].x, path[i].y, path[i].z);
 		sphere->setScale(0.25f);
 		points.push_back(sphere);
 	}
-	LineDrawer path_drawer(path, points.size(), true);
+	LineDrawer path_drawer(path, true);
+	LineDrawer spline_drawer(spline, true);
 
 	// main loop
 	while (!engine->isDone())
@@ -64,6 +106,7 @@ int main()
 		engine->render();
 
 		path_drawer.draw();
+		spline_drawer.draw();
 		
 		engine->swap();
 	}
