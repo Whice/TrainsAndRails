@@ -8,6 +8,7 @@ Wagon::Wagon(CatmullRomSpline* spline, Engine* engine, Mesh* cube_mesh, float st
 	this->distanceTraveled = startPointOnPath;
 	this->height = height;
 	this->speed = speed;
+	this->maxCurveLength = spline->GetLengthSpline();
 
 	Object* cube = engine->createObject(cube_mesh);
 	cube->setColor(113.0f/255, 23.0f/255, 0);
@@ -50,36 +51,46 @@ void Wagon::Update(float deltaTime)
 {
 	float deltaDistanceTravelled = deltaTime * this->speed;
 	float oldDistance = this->distanceTraveled;
+	float distanceForNextCurvePoint = this->distanceForNextCurvePoint;
 	float prevDistanceForNextCurvePoint;
 	CatmullRomSpline::PointLength* passedPoint;
+
+	//Прибавить смещение
 	this->distanceTraveled += deltaDistanceTravelled;
-	if (this->distanceTraveled > this->distanceForNextCurvePoint)
+	float newDistanceTraveled = this->distanceTraveled;
+
+	//Если "следующая" точка пройдена
+	if (newDistanceTraveled > distanceForNextCurvePoint)
 	{
+		if (newDistanceTraveled > this->maxCurveLength)
+		{
+			newDistanceTraveled -= this->maxCurveLength;
+			this->distanceTraveled = newDistanceTraveled;
+		}
 		int curvePointNumber = this->curvePointNumber;
 		int maxPoints = this->maxCurvePoints;
 
 		++curvePointNumber;
 		if (curvePointNumber > maxPoints)
 		{
-			this->distanceTraveled = 0;
 			curvePointNumber = 0;
 		}
 		passedPoint = this->spline->GetPointCurveInfo(curvePointNumber);
 		this->direction = passedPoint->direction;
-		prevDistanceForNextCurvePoint = this->distanceForNextCurvePoint;
-		this->distanceForNextCurvePoint = (this->spline->GetPointCurveInfo(curvePointNumber + 1))->pathLength;
+		prevDistanceForNextCurvePoint = distanceForNextCurvePoint;
+		distanceForNextCurvePoint = (this->spline->GetPointCurveInfo(curvePointNumber + 1))->pathLength;
 
-		while (this->distanceTraveled > this->distanceForNextCurvePoint)
+		//На случай, если задержка между кадрами была долгой.
+		while (newDistanceTraveled > distanceForNextCurvePoint)
 		{
 			++curvePointNumber;
 			if (curvePointNumber > maxPoints)
 			{
-				this->distanceTraveled = 0;
 				curvePointNumber = 0;
 			}
 
-			prevDistanceForNextCurvePoint = this->distanceForNextCurvePoint;
-			this->distanceForNextCurvePoint = (this->spline->GetPointCurveInfo(curvePointNumber + 1))->pathLength;
+			prevDistanceForNextCurvePoint = distanceForNextCurvePoint;
+			distanceForNextCurvePoint = (this->spline->GetPointCurveInfo(curvePointNumber + 1))->pathLength;
 		}
 
 		passedPoint = this->spline->GetPointCurveInfo(curvePointNumber);
@@ -87,6 +98,7 @@ void Wagon::Update(float deltaTime)
 		this->position = (*passedPoint->point) + this->direction * (deltaDistanceTravelled - (prevDistanceForNextCurvePoint - oldDistance));
 
 		this->curvePointNumber = curvePointNumber;
+		this->distanceForNextCurvePoint = distanceForNextCurvePoint;
 	}
 	else
 	{

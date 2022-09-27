@@ -27,6 +27,11 @@ private: CatmullRomSpline* spline;
 /// </summary>
 private: int maxCurvePoints;
 /// <summary>
+/// <summary>
+/// Длинна всей кривой.
+/// </summary>
+private: float maxCurveLength;
+/// <summary>
 /// Нынешнее положение вагона.
 /// </summary>
 private: vec2 position;

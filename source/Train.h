@@ -15,9 +15,9 @@ private: Engine* engine;
 	   /// </summary>
 private: CatmullRomSpline* spline;
 	   /// <summary>
-	   /// Нынешнее положение поезда.
+	   /// Начальное положение поезда.
 	   /// </summary>
-private: vec2 startPosition;
+private: float startPosition;
 	   /// <summary>
 	   /// Высота, на которой должнен находиться поезд.
 	   /// </summary>

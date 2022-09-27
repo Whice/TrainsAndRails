@@ -5,7 +5,7 @@ Train::Train(CatmullRomSpline& spline, Engine* engine, Mesh& cube_mesh, float st
 	this->spline = &spline;
 	this->engine = engine;
 	this->cube_mesh = &cube_mesh;
-	this->startPosition = startPosition;
+	this->startPosition = startPointOnPath;
 	this->speed = speed;
 	this->height = height;
 	for (int i = 0; i < wagonsCount; i++)
@@ -14,7 +14,7 @@ Train::Train(CatmullRomSpline& spline, Engine* engine, Mesh& cube_mesh, float st
 }
 float Train::GetStartPointforNextWagon()
 {
-	return (this->wagons.size() + 1) * this->distanceBeetwenWagons;
+	return this->startPosition + (this->wagons.size() + 1) * this->distanceBeetwenWagons;
 }
 void Train::CreateWagon()
 {

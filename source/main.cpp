@@ -58,7 +58,7 @@ int main()
 	crSpline.Calculate();
 	vector<vec3> spline = VectorVec2ToVec3(crSpline.GetCurvePoints());
 
-	Train train = Train(crSpline, engine, cube_mesh, 1, 0.3f, 5, 7);
+	Train train = Train(crSpline, engine, cube_mesh, 30, 0.3f, 5, 7);
 	Sleepers slep = Sleepers(crSpline, engine, cube_mesh, -0.375f);
 
 	vector<Object *> points;
