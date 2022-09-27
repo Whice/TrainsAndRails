@@ -46,6 +46,12 @@
     <Filter Include="source\Spline">
       <UniqueIdentifier>{f9ddebc5-7711-4995-9421-2f34a157fb56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Train">
+      <UniqueIdentifier>{72fe67a5-c620-471e-98e2-352fc3f51b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Extensions">
+      <UniqueIdentifier>{9b9957dd-6c20-4b9e-9f1c-75757936a22b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source/main.cpp">
@@ -80,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="source\CatmullRomSpline.cpp">
       <Filter>source\Spline</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Train.cpp">
+      <Filter>source\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Wagon.cpp">
+      <Filter>source\Train</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1248,6 +1260,15 @@
     </ClInclude>
     <ClInclude Include="source\CatmullRomSpline.h">
       <Filter>source\Spline</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Wagon.h">
+      <Filter>source\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Train.h">
+      <Filter>source\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AdditionalFunctions.h">
+      <Filter>source\Extensions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

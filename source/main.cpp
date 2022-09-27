@@ -1,6 +1,9 @@
 ﻿#include "framework/engine.h"
 #include "framework/utils.h"
 #include "CatmullRomSpline.h"
+#include "AdditionalFunctions.h"
+#include "Wagon.h"
+#include "Train.h"
 
 using namespace std;
 using namespace glm;
@@ -12,38 +15,6 @@ using namespace glm;
 * z - backward
 */
 
-#pragma region Дополнительные функции.
-
-inline vec2 Vec3ToVec2(const vec3 &v)
-{
-	vec3 c;
-	return vec2(v.x, v.z);
-}
-inline vector<vec2> VectorVec3ToVec2(const vector<vec3> &v3)
-{
-	vector<vec2> v2;
-	for (vec3 v : v3)
-	{
-		v2.push_back( Vec3ToVec2(v));
-	}
-	return v2;
-}
-
-inline vec3 Vec2ToVec3(const vec2 &v, float y=-0.375f)
-{
-	return vec3(v.x, y, v.y);
-}
-inline vector<vec3> VectorVec2ToVec3(const vector<vec2> &v2, float y = -0.375f)
-{
-	vector<vec3> v3;
-	for (vec2 v : v2)
-	{
-		v3.push_back(Vec2ToVec3(v, y));
-	}
-	return v3;
-}
-
-#pragma endregion Дополнительные функции.
 
 int main()
 {
@@ -61,6 +32,7 @@ int main()
 	// create shared meshes
 	Mesh plane_mesh = createPlane();
 	Mesh sphere_mesh = createSphere();
+	Mesh cube_mesh = createCube();
 
 	// create background objects
 	Object *plane = engine->createObject(&plane_mesh);
@@ -83,9 +55,13 @@ int main()
 
 	//Построение сплайна.
 	CatmullRomSpline crSpline;
-	crSpline.Init(VectorVec3ToVec2(path));
+	crSpline.Init(VectorVec3ToVec2(path), 0.4f, true, 100);
 	crSpline.Calculate();
 	vector<vec3> spline = VectorVec2ToVec3(crSpline.GetCurvePoints());
+	int number = crSpline.GetPointCurveNumber(-11);
+
+
+	Train train = Train(crSpline, engine, cube_mesh, 1, 0.3f, 5, 7);
 
 	vector<Object *> points;
 	for (int i = 0; i < path.size(); i++)
@@ -99,12 +75,20 @@ int main()
 	LineDrawer path_drawer(path, true);
 	LineDrawer spline_drawer(spline, true);
 
+	float lastFrame = 0;
+	float currentFrame;
+	float deltaTime;
 	// main loop
 	while (!engine->isDone())
 	{
+		// per-frame time logic
+		currentFrame = static_cast<float>(glfwGetTime());
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 		engine->update();
 		engine->render();
 
+		train.Update(deltaTime);
 		path_drawer.draw();
 		spline_drawer.draw();
 		

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "glm/vec2.hpp"
 #include <vector>
+#include "AdditionalFunctions.h"
 
 using namespace std;
 using namespace glm;
@@ -38,16 +39,17 @@ private: vector<vec2> curvePoints;
        /// <summary>
        /// Хранит длинну пути для двумерной точки.
        /// </summary>
-private: struct PointLength
+public: struct PointLength
 {
 public:
     vec2* point;
     float pathLength;
     float vectorLength;
+    vec2 direction;
 };
-       /// <summary>
-       /// Набор точек и длинны для них.
-       /// </summary>
+      /// <summary>
+      /// Набор точек и длинны для них.
+      /// </summary>
 private: vector<PointLength> pointsLength;
 
 #pragma endregion Полученные после подсчета данные.
@@ -119,16 +121,29 @@ public: vector<vec2> GetCurvePoints();
 public: inline float GetLengthSpline();
       /// <summary>
       /// Получить точку на указанной длине пути.
+      /// (Не узел кривой, а именно точку, для которой будет верна эта длина пути.)
       /// </summary>
 public: vec2 GetPointOnPath(float length);
       /// <summary>
       /// Получить количество узлов кривой.
       /// </summary>
-      private: inline size_t GetCountCurvePoints();
+public: inline size_t GetCountCurvePoints();
+       /// <summary>
+       /// Получить индекс последнего узла кривой.
+       /// </summary>
+private: inline size_t GetLastIndexCurvePoints();
+       /// <summary>
+       /// Получить информацию о узле кривой по ее порядковому номеру.
+       /// </summary>
+public:PointLength* GetPointCurveInfo(int numberPoint);
       /// <summary>
-      /// Получить индекс последнего узла кривой.
+      /// Получить номер последнего узла, который встретился на пути с такой длиной.
       /// </summary>
-      private: inline size_t GetLastIndexCurvePoints();
+public:int GetPointCurveNumber(float length);
+      /// <summary>
+      /// Скорректировать длину, чтобы она верно пападала в диапазон с 0 по максимальную длинну.
+      /// </summary>
+private: float CorrectLength(float length);
 
 };
 

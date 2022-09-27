@@ -103,6 +103,8 @@
     <ClCompile Include="source\framework\object.cpp" />
     <ClCompile Include="source\framework\shader.cpp" />
     <ClCompile Include="source\framework\utils.cpp" />
+    <ClCompile Include="source\Train.cpp" />
+    <ClCompile Include="source\Wagon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shader.frag" />
@@ -240,6 +242,7 @@
     <None Include="include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\AdditionalFunctions.h" />
     <ClInclude Include="source\CatmullRomSpline.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\GLFW\glfw3.h" />
@@ -495,6 +498,8 @@
     <ClInclude Include="source\framework\object.h" />
     <ClInclude Include="source\framework\shader.h" />
     <ClInclude Include="source\framework\utils.h" />
+    <ClInclude Include="source\Train.h" />
+    <ClInclude Include="source\Wagon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
