@@ -7,6 +7,7 @@ Train::Train(CatmullRomSpline& spline, Engine* engine, Mesh& cube_mesh, float st
 	this->cube_mesh = &cube_mesh;
 	this->startPosition = startPosition;
 	this->speed = speed;
+	this->height = height;
 	for (int i = 0; i < wagonsCount; i++)
 		CreateWagon();
 

@@ -103,6 +103,8 @@
     <ClCompile Include="source\framework\object.cpp" />
     <ClCompile Include="source\framework\shader.cpp" />
     <ClCompile Include="source\framework\utils.cpp" />
+    <ClCompile Include="source\Sleeper.cpp" />
+    <ClCompile Include="source\Sleepers.cpp" />
     <ClCompile Include="source\Train.cpp" />
     <ClCompile Include="source\Wagon.cpp" />
   </ItemGroup>
@@ -498,6 +500,8 @@
     <ClInclude Include="source\framework\object.h" />
     <ClInclude Include="source\framework\shader.h" />
     <ClInclude Include="source\framework\utils.h" />
+    <ClInclude Include="source\Sleeper.h" />
+    <ClInclude Include="source\Sleepers.h" />
     <ClInclude Include="source\Train.h" />
     <ClInclude Include="source\Wagon.h" />
   </ItemGroup>

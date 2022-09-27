@@ -78,10 +78,9 @@ vec2 CatmullRomSpline::GetPointOnPath(float length)
 
     vec2 v = *currentPoint.point - *prevPoint.point;
     v = normalize(v);
-    float miniLength = currentPoint.pathLength - length;
-    v *= miniLength;
+    float deltaLength = currentPoint.pathLength - length;
+    v *= deltaLength;
     vec2 result = *prevPoint.point + v;
-
     return result;
 }
 

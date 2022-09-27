@@ -52,6 +52,9 @@
     <Filter Include="source\Extensions">
       <UniqueIdentifier>{9b9957dd-6c20-4b9e-9f1c-75757936a22b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Road">
+      <UniqueIdentifier>{14418782-862b-48b7-8ea0-ba6fd516d759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source/main.cpp">
@@ -92,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="source\Wagon.cpp">
       <Filter>source\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Sleepers.cpp">
+      <Filter>source\Road</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Sleeper.cpp">
+      <Filter>source\Road</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1269,6 +1278,12 @@
     </ClInclude>
     <ClInclude Include="source\AdditionalFunctions.h">
       <Filter>source\Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Sleepers.h">
+      <Filter>source\Road</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Sleeper.h">
+      <Filter>source\Road</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

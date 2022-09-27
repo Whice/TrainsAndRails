@@ -1,9 +1,8 @@
 ﻿#include "framework/engine.h"
 #include "framework/utils.h"
 #include "CatmullRomSpline.h"
-#include "AdditionalFunctions.h"
-#include "Wagon.h"
 #include "Train.h"
+#include "Sleepers.h"
 
 using namespace std;
 using namespace glm;
@@ -58,10 +57,9 @@ int main()
 	crSpline.Init(VectorVec3ToVec2(path), 0.4f, true, 100);
 	crSpline.Calculate();
 	vector<vec3> spline = VectorVec2ToVec3(crSpline.GetCurvePoints());
-	int number = crSpline.GetPointCurveNumber(-11);
-
 
 	Train train = Train(crSpline, engine, cube_mesh, 1, 0.3f, 5, 7);
+	Sleepers slep = Sleepers(crSpline, engine, cube_mesh, -0.375f);
 
 	vector<Object *> points;
 	for (int i = 0; i < path.size(); i++)
