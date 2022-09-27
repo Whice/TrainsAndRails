@@ -3,6 +3,7 @@
 #include "CatmullRomSpline.h"
 #include "Train.h"
 #include "Sleepers.h"
+#include "Rails.h"
 
 using namespace std;
 using namespace glm;
@@ -60,6 +61,11 @@ int main()
 
 	Train train = Train(crSpline, engine, cube_mesh, 30, 0.3f, 5, 7);
 	Sleepers slep = Sleepers(crSpline, engine, cube_mesh, -0.375f);
+	Rails rails = Rails(crSpline, 0.3f, 0.1f);
+	vector<vec3> railsSpline1 = VectorVec2ToVec3(rails.GetRailsOuterCountour1());
+	vector<vec3> railsSpline2 = VectorVec2ToVec3(rails.GetRailsOuterCountour2());
+	vector<vec3> railsSpline3 = VectorVec2ToVec3(rails.GetRailsInnerCountour1());
+	vector<vec3> railsSpline4 = VectorVec2ToVec3(rails.GetRailsInnerCountour2());
 
 	vector<Object *> points;
 	for (int i = 0; i < path.size(); i++)
@@ -72,6 +78,16 @@ int main()
 	}
 	LineDrawer path_drawer(path, true);
 	LineDrawer spline_drawer(spline, true);
+
+	vec3 railsColor = vec3(0.6f, 0.6f, 0.6f);
+	LineDrawer railsSpline1_drawer(railsSpline1, true);
+	LineDrawer railsSpline2_drawer(railsSpline2, true);
+	LineDrawer railsSpline3_drawer(railsSpline3, true);
+	LineDrawer railsSpline4_drawer(railsSpline4, true);
+	railsSpline1_drawer.setColor(railsColor);
+	railsSpline2_drawer.setColor(railsColor);
+	railsSpline3_drawer.setColor(railsColor);
+	railsSpline4_drawer.setColor(railsColor);
 
 	float lastFrame = 0;
 	float currentFrame;
@@ -87,8 +103,12 @@ int main()
 		engine->render();
 
 		train.Update(deltaTime);
-		path_drawer.draw();
-		spline_drawer.draw();
+		//path_drawer.draw();
+		//spline_drawer.draw();
+		railsSpline1_drawer.draw();
+		railsSpline2_drawer.draw();
+		railsSpline3_drawer.draw();
+		railsSpline4_drawer.draw();
 		
 		engine->swap();
 	}

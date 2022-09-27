@@ -102,6 +102,9 @@
     <ClCompile Include="source\Sleeper.cpp">
       <Filter>source\Road</Filter>
     </ClCompile>
+    <ClCompile Include="source\Rails.cpp">
+      <Filter>source\Road</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shader.frag">
@@ -1283,6 +1286,9 @@
       <Filter>source\Road</Filter>
     </ClInclude>
     <ClInclude Include="source\Sleeper.h">
+      <Filter>source\Road</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Rails.h">
       <Filter>source\Road</Filter>
     </ClInclude>
   </ItemGroup>
